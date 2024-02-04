@@ -54,6 +54,22 @@ public class UserServiceImpl implements UserService {
         return users.stream().map((user) -> mapToUserDto(user)).collect(Collectors.toList());
     }
 
+    @Override
+    public List getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User updateUser(Long userId, User userDetails) {
+        User existingUser = userRepository.findById(Math.toIntExact(userId))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setEmail(userDetails.getEmail());
+
+        User updatedUser = userRepository.save(existingUser);
+        return updatedUser;
+    }
+
     private UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
         String[] str = user.getName().split(" ");

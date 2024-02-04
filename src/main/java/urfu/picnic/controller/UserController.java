@@ -1,27 +1,34 @@
 package urfu.picnic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.User;
-import urfu.picnic.repository.UserRepository;
+import urfu.picnic.service.UserService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user/")
 
 public class UserController {
+
+    private final UserService userService;
+
     @Autowired
-    private UserRepository userRepository;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping
+    public List getAllUsers() {
+        return userService.getAllUsers();
+    }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateUser(@PathVariable int id, @RequestBody User user) {
-        User existingUser = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        existingUser.setEmail(user.getEmail());
-
-        User updatedUser = userRepository.save(existingUser);
-        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    public ResponseEntity updateUser(@PathVariable(value = "id") Long userId, @RequestBody User userDetails) {
+        User user = userService.updateUser(userId, userDetails);
+        return ResponseEntity.ok(user);
     }
+
 }
