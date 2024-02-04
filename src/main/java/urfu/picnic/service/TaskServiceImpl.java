@@ -20,7 +20,7 @@ public class TaskServiceImpl implements TaskService {
 
 
     public Task getTask(Long id) throws Throwable {
-        return (Task) taskRepository.findByTaskId(id);
+        return taskRepository.findByTaskId(id);
     }
 
     public Task saveTask(Task task) {

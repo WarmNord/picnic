@@ -1,11 +1,9 @@
 package urfu.picnic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.Team;
-import urfu.picnic.repository.TeamRepository;
+import urfu.picnic.service.TeamService;
 
 import java.util.List;
 
@@ -13,7 +11,40 @@ import java.util.List;
 @RequestMapping("/api/teams")
 public class TeamController {
 
-    @Autowired
+    private final TeamService teamService;
+
+    public TeamController(TeamService teamService) {
+        this.teamService = teamService;
+    }
+
+    @GetMapping
+    public List getAllTeams() {
+        return teamService.getAllTeams();
+    }
+
+    @GetMapping("/{id}")
+    public Team getTeam(@PathVariable(value = "id") Long teamId) {
+        return teamService.getTeamById(teamId);
+    }
+
+    @PostMapping
+    public Team createTeam(@RequestBody Team team) {
+        return teamService.createTeam(team);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateTeam(@PathVariable(value = "id") Long teamId, @RequestBody Team teamDetails) {
+        Team updatedTeam = teamService.updateTeam(teamId, teamDetails);
+        return ResponseEntity.ok(updatedTeam);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTeam(@PathVariable(value = "id") Long teamId) {
+        teamService.deleteTeam(teamId);
+        return ResponseEntity.ok().build();
+    }
+
+/*    @Autowired
     private TeamRepository teamRepository;
 
     @GetMapping
@@ -50,5 +81,5 @@ public class TeamController {
                 .orElseThrow(() -> new RuntimeException("Team not found"));
         teamRepository.delete(team);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+    }*/
 }
