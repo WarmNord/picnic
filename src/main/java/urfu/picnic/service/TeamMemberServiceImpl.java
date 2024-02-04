@@ -6,6 +6,8 @@ import urfu.picnic.dto.TeamMemberDto;
 import urfu.picnic.entity.TeamMember;
 import urfu.picnic.repository.TeamMemberRepository;
 
+import java.util.List;
+
 @Service
 public class TeamMemberServiceImpl implements TeamMemberService {
 
@@ -16,21 +18,43 @@ public class TeamMemberServiceImpl implements TeamMemberService {
         this.teamMemberRepository = teamMemberRepository;
     }
 
-    public TeamMember getTeamMember(Long id) throws Throwable {
-        return (TeamMember) teamMemberRepository.findByMemberId(id)
-                .orElseThrow(() -> new RuntimeException("Team member Not Found"));
-    }
+    @Override
+    public void addNewMember(TeamMemberDto teamMemberDto) {
 
-    public TeamMember saveTeamMember(TeamMember teamMember) {
-        return teamMemberRepository.save(teamMember);
-    }
-
-    public void deleteTeamMember(Long id) {
-        teamMemberRepository.deleteByMemberId(id);
     }
 
     @Override
-    public void addNewMember(TeamMemberDto teamMemberDto) {
+    public List getAllTeamMembers() {
+        return teamMemberRepository.findAll();
+    }
+
+    @Override
+    public TeamMember getTeamMemberById(Long teamMemberId) {
+        return teamMemberRepository.findByMemberId(teamMemberId);
+    }
+
+    @Override
+    public TeamMember createTeamMember(TeamMember teamMember) {
+        return teamMemberRepository.save(teamMember);
+    }
+
+    @Override
+    public TeamMember updateTeamMember(Long teamMemberId, TeamMember teamMemberDetails) {
+        TeamMember existingTeamMember = teamMemberRepository.findById(teamMemberId)
+                .orElseThrow(() -> new RuntimeException("Team Member not found"));
+
+        existingTeamMember.setUserId(teamMemberDetails.getUserId());
+        existingTeamMember.setTeamId(teamMemberDetails.getTeamId());
+
+        TeamMember updatedTeamMember = teamMemberRepository.save(existingTeamMember);
+        return updatedTeamMember;
+    }
+
+    @Override
+    public void deleteTeamMember(Long teamMemberId) {
+        TeamMember existingTeamMember = teamMemberRepository.findById(teamMemberId)
+                .orElseThrow(() -> new RuntimeException("Team Member not found"));
+        teamMemberRepository.delete(existingTeamMember);
 
     }
 }

@@ -1,11 +1,9 @@
 package urfu.picnic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.TeamMember;
-import urfu.picnic.repository.TeamMemberRepository;
+import urfu.picnic.service.TeamMemberService;
 
 import java.util.List;
 
@@ -13,45 +11,36 @@ import java.util.List;
 @RequestMapping("/api/teamMembers")
 public class TeamMemberController {
 
-    @Autowired
-    private TeamMemberRepository teamMemberRepository;
+    private final TeamMemberService teamMemberService;
+
+    public TeamMemberController(TeamMemberService teamMemberService) {
+        this.teamMemberService = teamMemberService;
+    }
 
     @GetMapping
     public List getAllTeamMembers() {
-        return teamMemberRepository.findAll();
+        return teamMemberService.getAllTeamMembers();
     }
 
     @GetMapping("/{id}")
-    public TeamMember getTeamMember(@PathVariable Long id) {
-        return teamMemberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team Member not found"));
+    public TeamMember getTeamMemberById(@PathVariable(value = "id") Long teamMemberId) {
+        return teamMemberService.getTeamMemberById(teamMemberId);
     }
 
     @PostMapping
-    public ResponseEntity createTeamMember(@RequestBody TeamMember teamMember) {
-        TeamMember savedTeamMember = teamMemberRepository.save(teamMember);
-        return new ResponseEntity<>(savedTeamMember, HttpStatus.CREATED);
+    public TeamMember createTeamMember(@RequestBody TeamMember teamMember) {
+        return teamMemberService.createTeamMember(teamMember);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateTeamMember(@PathVariable Long id,
-                                           @RequestBody TeamMember teamMemberDetails) {
-        TeamMember existingTeamMember = teamMemberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team Member not found"));
-
-        existingTeamMember.setUserId(teamMemberDetails.getUserId());
-        existingTeamMember.setTeamId(teamMemberDetails.getTeamId());
-
-
-        TeamMember updatedTeamMember = teamMemberRepository.save(existingTeamMember);
-        return new ResponseEntity<>(updatedTeamMember, HttpStatus.OK);
+    public ResponseEntity updateTeamMember(@PathVariable(value = "id") Long teamMemberId, @RequestBody TeamMember teamMemberDetails) {
+        TeamMember updatedTeamMember = teamMemberService.updateTeamMember(teamMemberId, teamMemberDetails);
+        return ResponseEntity.ok(updatedTeamMember);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteTeamMember(@PathVariable Long id) {
-        TeamMember existingTeamMember = teamMemberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team Member not found"));
-        teamMemberRepository.delete(existingTeamMember);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity deleteTeamMember(@PathVariable(value = "id") Long teamMemberId) {
+        teamMemberService.deleteTeamMember(teamMemberId);
+        return ResponseEntity.ok().build();
     }
 }
