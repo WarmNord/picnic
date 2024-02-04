@@ -1,8 +1,18 @@
 package urfu.picnic.service;
 
-import urfu.picnic.dto.GroceryListDto;
+import urfu.picnic.entity.GroceryList;
+
+import java.util.List;
 
 public interface GroceryListService {
 
-    void addNewList(GroceryListDto groceryListDto);
+    List getAllGroceryList();
+
+    GroceryList getgroceryListById(Long groceryListId);
+
+    GroceryList createGroceryList(GroceryList groceryList);
+
+    GroceryList updateGroceryList(Long groceryListId, GroceryList groceryListDetails);
+
+    void deleteGroceryList(Long groceryListId);
 }

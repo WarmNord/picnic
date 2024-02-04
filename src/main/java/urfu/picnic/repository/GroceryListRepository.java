@@ -15,4 +15,5 @@ public interface GroceryListRepository extends JpaRepository<GroceryList, Intege
     void deleteByListId(int id);
 
 
+    GroceryList findByListId(Long groceryListId);
 }
