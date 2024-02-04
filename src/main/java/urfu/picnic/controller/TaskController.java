@@ -1,11 +1,9 @@
 package urfu.picnic.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.Task;
-import urfu.picnic.repository.TaskRepository;
+import urfu.picnic.service.TaskService;
 
 import java.util.List;
 
@@ -13,7 +11,41 @@ import java.util.List;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    @Autowired
+    private final TaskService taskService;
+
+    public TaskController(TaskService taskService) {
+        this.taskService = taskService;
+    }
+
+    @GetMapping
+    public List getAllTasks() {
+        return taskService.getAllTasks();
+    }
+
+    @GetMapping("/{id}")
+    public Task getTaskById(@PathVariable(value = "id") Long taskId) {
+        return taskService.getTaskById(taskId);
+    }
+
+    @PostMapping
+    public Task createTask(@RequestBody Task task) {
+        return taskService.createTask(task);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity updateTask(@PathVariable(value = "id") Long taskId, @RequestBody Task taskDetails) {
+        Task updatedTask = taskService.updateTask(taskId, taskDetails);
+        return ResponseEntity.ok(updatedTask);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteTask(@PathVariable(value = "id") Long taskId) {
+        taskService.deleteTask(taskId);
+        return ResponseEntity.ok().build();
+    }
+}
+
+/*    @Autowired
     private TaskRepository taskRepository;
 
     @GetMapping
@@ -53,5 +85,4 @@ public class TaskController {
                 .orElseThrow(() -> new RuntimeException("Task not found"));
         taskRepository.delete(task);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-}
+    }*/
