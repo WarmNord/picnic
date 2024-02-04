@@ -7,7 +7,7 @@ import urfu.picnic.entity.TeamMember;
 import urfu.picnic.repository.TeamMemberRepository;
 
 @Service
-public class TeamMemberServiceImpl implements TeamMemberService{
+public class TeamMemberServiceImpl implements TeamMemberService {
 
     private TeamMemberRepository teamMemberRepository;
 

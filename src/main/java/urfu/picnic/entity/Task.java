@@ -18,13 +18,13 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "taskId", nullable = false, unique = true)
-    private int taskId;
+    private Long taskId;
 
     @Column(name = "userId", nullable = false)
-    private int userId;
+    private Long userId;
 
     @Column(name = "teamId", nullable = false)
-    private int teamId;
+    private Long teamId;
 
     @Column(name = "description")
     private String description;

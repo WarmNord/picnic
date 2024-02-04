@@ -1,11 +1,11 @@
 package urfu.picnic.entity;
 
-import javax.persistence.*;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,7 +17,7 @@ public class Team {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "teamId", nullable = false, unique = true)
-    private int teamId;
+    private Long teamId;
 
     @Column(name = "teamName", nullable = false)
     private String teamName;

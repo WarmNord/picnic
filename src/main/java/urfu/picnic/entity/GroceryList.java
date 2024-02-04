@@ -1,15 +1,17 @@
 package urfu.picnic.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
-
+@Data
 @Entity
 @Table(name = "list")
-public class GroceryList {
+public class GroceryList { // Не забыть поправить диаграмму и изменить там имя
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int listId;
+    private Long listId;
 
     @Column(length = 50, nullable = false)
     private String listName;
@@ -18,13 +20,13 @@ public class GroceryList {
     private String productName;
 
     @Column(nullable = false)
-    private int categoryId;
+    private Long categoryId;
 
-    private Integer weight;
+    private Long weight;
 
-    private Integer liters;
+    private Long liters;
 
-    private Integer quantity;
+    private Long quantity;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "categoryId", nullable = false)

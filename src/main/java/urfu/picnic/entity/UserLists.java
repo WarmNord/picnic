@@ -19,10 +19,10 @@ public class UserLists {
 
     @Id
     @Column(name = "userId", nullable = false)
-    private int userId;
+    private Long userId;
 
     @Column(name = "listId", nullable = false)
-    private int listId;
+    private Long listId;
 
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "teamId", nullable = true)
