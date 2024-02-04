@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface UserListsRepository extends JpaRepository<UserLists, Integer> {
 
-    UserLists findUserListsByUserId(int listId);
+    UserLists findUserListsByUserId(Long listId);
 
-    Optional findByUserId(int userId);
+    Optional findByListId(Long userId);
 
     UserLists save(UserLists userLists);
 

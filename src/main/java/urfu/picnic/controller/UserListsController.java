@@ -1,11 +1,10 @@
 package urfu.picnic.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.UserLists;
-import urfu.picnic.repository.UserListsRepository;
+import urfu.picnic.service.UserListsService;
 
 import java.util.List;
 
@@ -13,44 +12,37 @@ import java.util.List;
 @RequestMapping("/api/userList")
 public class UserListsController {
 
+    private final UserListsService userListsService;
+
     @Autowired
-    private UserListsRepository userListRepository;
+    public UserListsController(UserListsService userListsService) {
+        this.userListsService = userListsService;
+    }
 
     @GetMapping
     public List getAllUsers() {
-        return userListRepository.findAll();
+        return userListsService.getAllUsers();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity getUser(@PathVariable int id) {
-        UserLists userLists = userListRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return new ResponseEntity<>(userLists, HttpStatus.OK);
+    public UserLists getUserListById(@PathVariable(value = "id") Long userListId) {
+        return userListsService.getUserListById(userListId);
     }
 
     @PostMapping
-    public ResponseEntity createUser(@RequestBody UserLists userLists) {
-        UserLists savedUserLists = userListRepository.save(userLists);
-        return new ResponseEntity<>(savedUserLists, HttpStatus.CREATED);
+    public UserLists createUserList(@RequestBody UserLists user) {
+        return userListsService.createUserList(user);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateUserList(@PathVariable int id, @RequestBody UserLists userLists) {
-        UserLists existingUserList = userListRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-
-        existingUserList.setTeam(userLists.getTeam());
-        existingUserList.setUserId(userLists.getUserId());
-
-        UserLists updatedUserList = userListRepository.save(existingUserList);
-        return new ResponseEntity<>(updatedUserList, HttpStatus.OK);
+    public ResponseEntity updateUserList(@PathVariable(value = "id") Long userId, @RequestBody UserLists userListsDetails) {
+        UserLists userLists = userListsService.updateUser(userId, userListsDetails);
+        return ResponseEntity.ok(userLists);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteUserList(@PathVariable int id) {
-        UserLists existingUserList = userListRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        userListRepository.delete(existingUserList);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity deleteUserList(@PathVariable(value = "id") Long userListId) {
+        userListsService.deleteUserList(userListId);
+        return ResponseEntity.ok().build();
     }
 }
