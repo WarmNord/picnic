@@ -2,7 +2,6 @@ package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import urfu.picnic.dto.TeamDto;
 import urfu.picnic.entity.Team;
 import urfu.picnic.repository.TeamRepository;
 
@@ -21,11 +20,6 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public Team getTeamById(Long id) {
         return teamRepository.findByTeamId(id);
-    }
-
-    @Override
-    public void addNewTeam(TeamDto teamDto) {
-
     }
 
     @Override

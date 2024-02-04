@@ -2,7 +2,6 @@ package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import urfu.picnic.dto.CategoryDto;
 import urfu.picnic.entity.Category;
 import urfu.picnic.repository.CategoryRepository;
 
@@ -17,20 +16,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     public void CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
-    }
-
-    public Category getCategory(int id) throws Throwable {
-        return categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category Not Found"));
-    }
-
-    public Category saveCategory(Category category) {
-        return categoryRepository.save(category);
-    }
-
-    @Override
-    public void addCategory(CategoryDto categoryDto) {
-
     }
 
     @Override

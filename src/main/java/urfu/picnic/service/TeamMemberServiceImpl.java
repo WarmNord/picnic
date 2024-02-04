@@ -2,7 +2,6 @@ package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import urfu.picnic.dto.TeamMemberDto;
 import urfu.picnic.entity.TeamMember;
 import urfu.picnic.repository.TeamMemberRepository;
 
@@ -16,11 +15,6 @@ public class TeamMemberServiceImpl implements TeamMemberService {
     @Autowired
     public void TeamMemberService(TeamMemberRepository teamMemberRepository) {
         this.teamMemberRepository = teamMemberRepository;
-    }
-
-    @Override
-    public void addNewMember(TeamMemberDto teamMemberDto) {
-
     }
 
     @Override

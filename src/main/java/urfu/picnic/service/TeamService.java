@@ -1,13 +1,10 @@
 package urfu.picnic.service;
 
-import urfu.picnic.dto.TeamDto;
 import urfu.picnic.entity.Team;
 
 import java.util.List;
 
 public interface TeamService {
-
-    void addNewTeam(TeamDto teamDto);
 
     List getAllTeams();
 

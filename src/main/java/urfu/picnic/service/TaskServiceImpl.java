@@ -2,7 +2,6 @@ package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import urfu.picnic.dto.TaskDto;
 import urfu.picnic.entity.Task;
 import urfu.picnic.repository.TaskRepository;
 
@@ -18,23 +17,10 @@ public class TaskServiceImpl implements TaskService {
         this.taskRepository = taskRepository;
     }
 
-
-    public Task getTask(Long id) throws Throwable {
-        return taskRepository.findByTaskId(id);
-    }
-
-    public Task saveTask(Task task) {
-        return taskRepository.save(task);
-    }
-
     public void deleteTask(Long id) {
         taskRepository.deleteByTaskId(id);
     }
 
-    @Override
-    public void addNewTask(TaskDto taskDto) {
-
-    }
 
     @Override
     public List getAllTasks() {

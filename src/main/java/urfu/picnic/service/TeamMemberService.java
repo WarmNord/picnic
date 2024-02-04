@@ -1,13 +1,10 @@
 package urfu.picnic.service;
 
-import urfu.picnic.dto.TeamMemberDto;
 import urfu.picnic.entity.TeamMember;
 
 import java.util.List;
 
 public interface TeamMemberService {
-
-    void addNewMember(TeamMemberDto teamMemberDto);
 
     List getAllTeamMembers();
 

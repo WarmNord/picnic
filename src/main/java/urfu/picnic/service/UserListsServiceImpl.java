@@ -2,7 +2,6 @@ package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import urfu.picnic.dto.UserListsDto;
 import urfu.picnic.entity.UserLists;
 import urfu.picnic.repository.UserListsRepository;
 
@@ -16,24 +15,6 @@ public class UserListsServiceImpl implements UserListsService {
     @Autowired
     public void UserListsService(UserListsRepository userListsRepository) {
         this.userListsRepository = userListsRepository;
-    }
-
-    public UserLists getUserList(Long id) throws Throwable {
-        return (UserLists) userListsRepository.findByListId(id)
-                .orElseThrow(() -> new RuntimeException("User list Not Found"));
-    }
-
-    public UserLists saveTeam(UserLists userLists) {
-        return userListsRepository.save(userLists);
-    }
-
-    public void deleteUserLists(int id) {
-        userListsRepository.deleteByListId(id);
-    }
-
-    @Override
-    public void addNewUserList(UserListsDto userListsDto) {
-
     }
 
     @Override
