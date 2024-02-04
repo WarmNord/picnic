@@ -2,12 +2,10 @@ package urfu.picnic.controller;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import urfu.picnic.entity.Category;
-import urfu.picnic.repository.CategoryRepository;
+import urfu.picnic.service.CategoryService;
 
 import java.util.List;
 
@@ -17,41 +15,36 @@ import java.util.List;
 @RequestMapping("/api/categories")
 public class CategoryController {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
+
+    public CategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping
     public List getAllCategories() {
-        return categoryRepository.findAll();
+        return categoryService.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getCategory(@PathVariable int id) {
-        return categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found"));
+    public Category getCategoryById(@PathVariable(value = "id") Long categoryId) {
+        return categoryService.getCategoryById(categoryId);
     }
 
-    @PostMapping("/create")
-    public ResponseEntity createCategory(@RequestBody Category category) {
-        Category savedCategory = categoryRepository.save(category);
-        return new ResponseEntity<>(savedCategory, HttpStatus.CREATED);
+    @PostMapping
+    public Category createCategory(@RequestBody Category category) {
+        return categoryService.createCategory(category);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity updateCategory(@PathVariable int id, @RequestBody Category category) {
-        Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-
-        existingCategory.setCategoryName(category.getCategoryName());
-
-        Category updatedCategory = categoryRepository.save(existingCategory);
-        return new ResponseEntity<>(updatedCategory, HttpStatus.OK);
+    public ResponseEntity updateCategory(@PathVariable(value = "id") Long categoryId, @RequestBody Category categoryDetails) {
+        Category category = categoryService.updateCategory(categoryId, categoryDetails);
+        return ResponseEntity.ok(category);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteCategory(@PathVariable int id) {
-        Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
-        categoryRepository.delete(category);
-        return new ResponseEntity<Category>(HttpStatus.NO_CONTENT);
+    public ResponseEntity deleteCategory(@PathVariable(value = "id") Long categoryId) {
+        categoryService.deleteCategory(categoryId);
+        return ResponseEntity.ok().build();
     }
 }

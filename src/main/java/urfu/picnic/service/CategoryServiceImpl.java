@@ -6,6 +6,8 @@ import urfu.picnic.dto.CategoryDto;
 import urfu.picnic.entity.Category;
 import urfu.picnic.repository.CategoryRepository;
 
+import java.util.List;
+
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
@@ -18,7 +20,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     public Category getCategory(int id) throws Throwable {
-        return (Category) categoryRepository.findById(id)
+        return categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category Not Found"));
     }
 
@@ -26,12 +28,39 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryRepository.save(category);
     }
 
-    public void deleteCategory(int id) {
-        categoryRepository.deleteById(id);
-    }
-
     @Override
     public void addCategory(CategoryDto categoryDto) {
 
+    }
+
+    @Override
+    public List getAllCategories() {
+        return categoryRepository.findAll();
+    }
+
+    @Override
+    public void deleteCategory(Long categoryId) {
+        categoryRepository.deleteByCategoryId(Math.toIntExact(categoryId));
+    }
+
+    @Override
+    public Category getCategoryById(Long categoryId) {
+        return categoryRepository.findByCategoryId(categoryId);
+    }
+
+    @Override
+    public Category createCategory(Category category) {
+        return categoryRepository.save(category);
+    }
+
+    @Override
+    public Category updateCategory(Long categoryId, Category categoryDetails) {
+        Category existingCategory = categoryRepository.findById(Math.toIntExact(categoryId))
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        existingCategory.setCategoryName(categoryDetails.getCategoryName());
+
+        Category updatedCategory = categoryRepository.save(existingCategory);
+        return updatedCategory;
     }
 }
