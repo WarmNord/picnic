@@ -4,5 +4,5 @@ import urfu.picnic.dto.UserListsDto;
 
 public interface UserListsService {
 
-    void addNewUserList (UserListsDto userListsDto);
+    void addNewUserList(UserListsDto userListsDto);
 }

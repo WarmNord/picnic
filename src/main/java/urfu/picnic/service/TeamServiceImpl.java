@@ -7,7 +7,7 @@ import urfu.picnic.entity.Team;
 import urfu.picnic.repository.TeamRepository;
 
 @Service
-public class TeamServiceImpl implements TeamService{
+public class TeamServiceImpl implements TeamService {
 
 
     private TeamRepository teamRepository;
@@ -29,6 +29,7 @@ public class TeamServiceImpl implements TeamService{
     public void deleteTeam(int id) {
         teamRepository.deleteByTeamId(id);
     }
+
     @Override
     public void addNewTeam(TeamDto teamDto) {
 

@@ -1,7 +1,6 @@
 package urfu.picnic.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import urfu.picnic.entity.Category;
 import urfu.picnic.entity.GroceryList;
 
 import java.util.Optional;

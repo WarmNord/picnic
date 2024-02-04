@@ -1,7 +1,7 @@
 package urfu.picnic.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.*;
+import org.springframework.stereotype.Service;
 import urfu.picnic.dto.GroceryListDto;
 import urfu.picnic.entity.GroceryList;
 import urfu.picnic.repository.GroceryListRepository;
@@ -10,6 +10,7 @@ import urfu.picnic.repository.GroceryListRepository;
 public class GroceryListServiceImpl implements GroceryListService {
 
     private GroceryListRepository groceryListRepository;
+
     @Autowired
     public GroceryListServiceImpl(GroceryListRepository groceryListRepository) {
         this.groceryListRepository = groceryListRepository;

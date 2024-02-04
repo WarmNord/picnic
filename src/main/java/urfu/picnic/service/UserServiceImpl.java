@@ -1,13 +1,13 @@
 package urfu.picnic.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import urfu.picnic.dto.UserDto;
 import urfu.picnic.entity.Role;
 import urfu.picnic.entity.User;
 import urfu.picnic.repository.RoleRepository;
 import urfu.picnic.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -22,20 +22,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder){
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getFirstName() + " " +userDto.getLastName());
+        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
         user.setEmail(userDto.getEmail());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
         Role role = roleRepository.findByName("ROLE_ADMIN");
-        if(role == null){
+        if (role == null) {
             role = checkRoleExist();
         }
         user.setRoles(Arrays.asList(role));
@@ -53,16 +54,16 @@ public class UserServiceImpl implements UserService {
         return users.stream().map((user) -> mapToUserDto(user)).collect(Collectors.toList());
     }
 
-    private UserDto mapToUserDto(User user){
+    private UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
-        String [] str = user.getName().split(" ");
+        String[] str = user.getName().split(" ");
         userDto.setFirstName(str[0]);
         userDto.setLastName(str[1]);
         userDto.setEmail(user.getEmail());
         return userDto;
     }
 
-    private Role checkRoleExist(){
+    private Role checkRoleExist() {
         Role role = new Role();
         role.setName("ROLE_ADMIN");
         return roleRepository.save(role);

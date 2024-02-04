@@ -28,6 +28,7 @@ public class UserListsServiceImpl implements UserListsService {
     public void deleteUserLists(int id) {
         userListsRepository.deleteByListId(id);
     }
+
     @Override
     public void addNewUserList(UserListsDto userListsDto) {
 
